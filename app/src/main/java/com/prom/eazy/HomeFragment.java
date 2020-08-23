@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Entity;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
+import android.media.AudioMetadata;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,19 +18,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.security.KeyStore;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -63,7 +74,9 @@ public class HomeFragment extends Fragment {
 
     private void initUI(){
         context  = getContext();
+
         hamb = (ImageView) rootView.findViewById(R.id.hamb);
+
         hamb.setClickable(true);
         hamb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +109,7 @@ public class HomeFragment extends Fragment {
         lineDataSet1.setDrawValues(false);
         lineDataSet1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         lineDataSet1.setGradientColor(Color.rgb(250,137,107),Color.rgb(255,188,168));
-        lineDataSet1.setCubicIntensity((float) .3);
+        //lineDataSet1.setCubicIntensity((float) .2);
         lineDataSet1.setDrawHorizontalHighlightIndicator(false);
         lineDataSet1.setDrawFilled(true);
         lineDataSet1.setFillColor(Color.rgb(250,137,107));
@@ -147,9 +160,14 @@ public class HomeFragment extends Fragment {
         mpLineChart.getXAxis().setDrawGridLines(false);
         mpLineChart.getAxisRight().setDrawGridLines(false);
         mpLineChart.getAxisRight().setDrawLabels(false);
-        mpLineChart.getXAxis().setDrawLabels(false);
+        mpLineChart.getXAxis().setDrawLabels(true);
+        mpLineChart.getXAxis().setTextColor(Color.BLUE);
+        mpLineChart.getXAxis().setTextSize(10f);
+        mpLineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        //mpLineChart.getXAxis().setValueFormatter(new MyXAxis());
         mpLineChart.getAxisLeft().setDrawLabels(false);
         mpLineChart.setDrawBorders(false);
+        mpLineChart.getXAxis().setGranularity(1);
         //mpLineChart.setDrawMarkers(false);
         //mpLineChart.setLeft(1);
         new Handler().postDelayed(new Runnable() {
@@ -159,7 +177,28 @@ public class HomeFragment extends Fragment {
             }
         }, 1000);
 
+        /////
+        final String[] weekdays = {"Sun", "Mon", "Tue", "Wed", "Thu"}; // Your List / array with String Values For X-axis Labels
+        List<String> xAxisValues = new ArrayList<>(Arrays.asList("Sun", "Mon", "Tue", "Wed", "Thu"));
 
+        // Set the value formatter
+        //mpLineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(weekdays));
+        //mpLineChart.getXAxis().setValueFormatter(new com.github.mikephil.charting.formatter.IndexAxisValueFormatter(xAxisValues));
+        mpLineChart.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                // return the string va
+                final String[] weekdays = {"Sun", "Mon", "Tue", "Wed", "Thu"};
+                int index = Math.round(value);
+
+                //if (index < 0 || index >= weekdays.length || index != (int)value)
+                //    return "";
+
+                return weekdays[index];
+            }
+        });
+
+        /////
 
 
         mpLineChart.setData(data);
@@ -184,5 +223,9 @@ public class HomeFragment extends Fragment {
 
         return dataVals;
     }
+
+
+
+
 
 }

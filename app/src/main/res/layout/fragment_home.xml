@@ -222,10 +222,43 @@
             android:textColor="@color/crevette"
             android:paddingTop="6dp"/>
 
+        <RadioGroup android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/scroll"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="20dp">
+
+            <RadioButton android:id="@+id/ventes"
+                android:layout_width="85dp"
+                android:layout_height="50dp"
+                android:background="@drawable/button_selector"
+                android:button="@android:color/transparent"
+                android:checked="true"
+                android:padding="10dp"
+                android:gravity="center"
+                android:text="@string/ventes"
+                android:textColor="@color/white"
+                />
+
+            <RadioButton android:id="@+id/depenses"
+                android:layout_width="85dp"
+                android:layout_height="50dp"
+                android:background="@drawable/button_selector"
+                android:button="@android:color/transparent"
+                android:padding="10dp"
+                android:gravity="center"
+                android:text="@string/depenses"
+                android:textColor="@color/white"
+                android:layout_marginLeft="15dp"
+                />
 
 
+        </RadioGroup>
 
-            <ScrollView
+
+            <ScrollView android:id="@+id/scroll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintRight_toRightOf="parent"
@@ -246,7 +279,7 @@
                         android:layout_height="150dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="45dp"
+                        android:layout_marginBottom="47dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>

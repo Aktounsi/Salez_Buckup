@@ -27,4 +27,6 @@
     <string name="votre_caisse">Votre caisse</string>
     <string name="aujourd_hui">Aujourd\'hui</string>
     <string name="cette_semaine">Cette semaine</string>
+    <string name="ventes">Ventes</string>
+    <string name="depenses">Dépenses</string>
 </resources>
