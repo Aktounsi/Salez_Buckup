@@ -6,9 +6,9 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-        <dimen name="medium">16dp</dimen>
-        <dimen name="small">8dp</dimen>
-        <dimen name="xsmall">4dp</dimen>
+    <dimen name="medium">16dp</dimen>
+    <dimen name="small">8dp</dimen>
+    <dimen name="xsmall">4dp</dimen>
     <dimen name="appbarPadding">24dp</dimen>
     <dimen name="appbarImgDrawer">65</dimen>
     <dimen name="appbarImgDrawerPadding">20</dimen>
@@ -44,6 +44,6 @@
     <dimen name="radioBtnHeight">70dp</dimen>
     <dimen name="LineChartWidth">500dp</dimen>
     <dimen name="LineChartHeight">300dp</dimen>
-    <dimen name="SlidingPanelHeight">300dp</dimen>
+    <dimen name="SlidingPanelHeight">350dp</dimen>
 
 </resources>

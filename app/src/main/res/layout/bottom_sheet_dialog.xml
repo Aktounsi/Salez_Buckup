@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/bottom_sheet_dialog_bg">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Saisir le motif pour ce client"
+        android:layout_gravity="center"
+        android:textSize="25sp"
+        android:layout_marginBottom="20dp"/>
+    <RadioGroup android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton android:id="@+id/absence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:gravity="left"
+            android:text="@string/absence"
+            android:textColor="@drawable/radio_selector"
+            android:buttonTint="@drawable/radio_selector"
+            android:padding="6dp"/>
+
+        <RadioButton android:id="@+id/produit_dispo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="@string/produit_dispo"
+            android:textColor="@drawable/radio_selector"
+            android:buttonTint="@drawable/radio_selector"
+            android:padding="6dp"/>
+
+        <RadioButton android:id="@+id/ferme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="@string/ferme"
+            android:textColor="@drawable/radio_selector"
+            android:buttonTint="@drawable/radio_selector"
+            android:padding="6dp"/>
+
+        <RadioButton android:id="@+id/manque_liqu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="@string/manque_liqu"
+            android:textColor="@drawable/radio_selector"
+            android:buttonTint="@drawable/radio_selector"
+            android:padding="6dp"/>
+
+        <RadioButton android:id="@+id/refus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="@string/refus"
+            android:textColor="@drawable/radio_selector"
+            android:buttonTint="@drawable/radio_selector"
+            android:padding="6dp"/>
+
+        <RadioButton android:id="@+id/autre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="@string/autre"
+            android:textColor="@drawable/radio_selector"
+            android:buttonTint="@drawable/radio_selector"
+            android:padding="6dp"/>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Valider"
+        android:background="@drawable/button_valider_bg"
+        android:textColor="@color/white"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>

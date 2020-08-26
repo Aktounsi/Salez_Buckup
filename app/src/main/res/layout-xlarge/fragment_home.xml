@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HomeFragment"
+    android:background="@color/purple">
+
+    <!-- TODO: Update blank fragment layout -->
+    <!--Top Bar-->
+    <RelativeLayout android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/appbarPadding"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@color/purple">
+
+        <ImageView
+            android:id="@+id/hamb"
+            android:layout_width="@dimen/appbarImgDrawer"
+            android:layout_height="@dimen/appbarImgDrawer"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/grey_circular_border"
+            android:padding="@dimen/appbarImgDrawerPadding"
+            android:src="@drawable/square_icon_white"
+            android:layout_margin="@dimen/appbarImgMargin"/>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/salez"
+                android:textColor="@color/white"
+                android:textSize="@dimen/appbarTxt1Size" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/xsmall"
+                android:text="@string/direct_sales_management"
+                android:textSize="@dimen/appbarTxt2Size"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout android:id="@+id/caisse"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/caisseHeight"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:paddingLeft="@dimen/caisse">
+
+        <TextView android:id="@+id/txtCaisse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/votre_caisse"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/txt1Caisse" />
+
+        <TextView android:id="@+id/dzd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/txt2Caisse"
+            android:paddingBottom="@dimen/txt2CaissePadding"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/dzd"
+            android:layout_alignBottom="@id/txtCaisse"
+            android:layout_alignParentBottom="true"
+            android:text="0.00"
+            android:textColor="@color/white"
+            android:textSize="@dimen/txt3Caisse"
+            android:paddingTop="@dimen/txt3CaissePadding"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/caisseHeight"
+        app:layout_constraintTop_toBottomOf="@id/caisse"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:padding="@dimen/realisationPadding">
+
+        <ProgressBar android:id="@+id/dailyRailisation"
+            android:layout_width="@dimen/progressbarHeight"
+            android:layout_height="@dimen/progressbarHeight"
+            style="@style/CircularDeterminateProgressBarWhite"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:padding="@dimen/progressbarPadding"
+            android:paddingBottom="18dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/dailyRailisation"
+            android:layout_alignParentBottom="true"
+            android:padding="@dimen/realisationPaddingTxt">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/aujourd_hui"
+                android:textColor="@color/white"
+                android:textSize="@dimen/realisationtxtSize"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0%"
+                android:textColor="@color/white"
+                android:textSize="@dimen/realisationtxtSize"
+                />
+        </LinearLayout>
+
+
+
+
+
+        <LinearLayout  android:id="@+id/txtWeeklyRealisation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:padding="@dimen/realisationPaddingTxt">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cette_semaine"
+                android:textColor="@color/crevette"
+                android:textSize="@dimen/realisationtxtSize"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0%"
+                android:textColor="@color/crevette"
+                android:textSize="@dimen/realisationtxtSize"
+                />
+        </LinearLayout>
+
+        <ProgressBar android:id="@+id/weeklyRailisation"
+            android:layout_width="@dimen/progressbar2Height"
+            android:layout_height="@dimen/progressbar2Height"
+            android:layout_toLeftOf="@+id/txtWeeklyRealisation"
+            style="@style/CircularDeterminateProgressBar"
+            android:layout_alignParentBottom="true"
+            android:padding="@dimen/progressbarPadding"
+            />
+
+
+    </RelativeLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/graphLayoutHeight"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/raduis"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+        <TextView android:id="@+id/titleFrqgmentHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_home"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:textSize="@dimen/graphLayoutTxt1Size"
+            android:textColor="@color/purple"
+            android:paddingTop="@dimen/graphLayoutTxt1PaddingTop"
+            android:paddingLeft="@dimen/graphLayoutTxt1PaddingLeft"
+            android:textStyle="bold"/>
+        <TextView android:id="@+id/cette_semaine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cette semaine"
+            app:layout_constraintTop_toBottomOf="@id/titleFrqgmentHome"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:textSize="@dimen/graphLayoutTxt2Size"
+            android:textColor="@color/purple"
+            android:paddingTop="@dimen/graphLayoutTxt2PaddingTop"
+            android:paddingLeft="@dimen/graphLayoutTxt2PaddingLeft"/>
+        <TextView android:id="@+id/dolla"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$"
+            app:layout_constraintTop_toBottomOf="@id/cette_semaine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/weekCA"
+            android:textSize="@dimen/graphLayoutTxt3Size"
+            android:textColor="@color/crevette"
+            android:paddingTop="@dimen/graphLayoutTxt3PaddingTop"
+            android:paddingLeft="@dimen/graphLayoutTxt3PaddingLeft"/>
+        <TextView android:id="@+id/weekCA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.00"
+            app:layout_constraintTop_toBottomOf="@id/cette_semaine"
+            app:layout_constraintLeft_toRightOf="@id/dolla"
+            android:textSize="@dimen/graphLayoutTxt4Size"
+            android:textColor="@color/crevette"
+            android:paddingTop="@dimen/graphLayoutTxt4PaddingTop"/>
+
+        <RadioGroup android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/scroll"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="30dp">
+
+            <RadioButton android:id="@+id/ventes"
+                android:layout_width="@dimen/radioBtnWidth"
+                android:layout_height="@dimen/radioBtnHeight"
+                android:background="@drawable/button_selector"
+                android:button="@android:color/transparent"
+                android:checked="true"
+                android:padding="10dp"
+                android:gravity="center"
+                android:text="@string/ventes"
+                android:textColor="@color/white"
+                />
+
+            <RadioButton android:id="@+id/depenses"
+                android:layout_width="@dimen/radioBtnWidth"
+                android:layout_height="@dimen/radioBtnHeight"
+                android:background="@drawable/button_selector"
+                android:button="@android:color/transparent"
+                android:padding="10dp"
+                android:gravity="center"
+                android:text="@string/depenses"
+                android:textColor="@color/white"
+                android:layout_marginLeft="15dp"
+                />
+
+
+        </RadioGroup>
+
+
+            <ScrollView android:id="@+id/scroll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:scrollbars="none" >
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    >
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/line_chart"
+                        android:layout_width="@dimen/LineChartWidth"
+                        android:layout_height="@dimen/LineChartHeight"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="47dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

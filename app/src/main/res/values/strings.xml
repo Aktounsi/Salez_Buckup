@@ -29,4 +29,20 @@
     <string name="cette_semaine">Cette semaine</string>
     <string name="ventes">Ventes</string>
     <string name="depenses">Dépenses</string>
+
+    <string name="dim">Dimanche</string>
+    <string name="lun">Lundi</string>
+    <string name="mar">Mardi</string>
+    <string name="mer">Mercredi</string>
+    <string name="jeu">Jeudi</string>
+    <string name="quantit_chargee">Quantité Chargée :</string>
+    <string name="quantit_Vendue">Quantité vendue :</string>
+    <string name="quantit_restante">Quantité restante :</string>
+    <string name="prix">Prix :</string>
+    <string name="ferme">Fermé</string>
+    <string name="produit_dispo">Produit disponible</string>
+    <string name="manque_liqu">Manque de liquidité</string>
+    <string name="refus">Refus achat</string>
+    <string name="autre">Autre motif</string>
+    <string name="absence">Absence gérant</string>
 </resources>

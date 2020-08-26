@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <item android:state_pressed="true">
+    <!--  Gradient Bg for listrow -->
+            <shape android:shape="rectangle" >
+                <gradient
+                    android:startColor="#411899"
+                    android:centerColor="#411889"
+                    android:endColor="#411879"
+                    android:angle="270" />
+            </shape>
+        </item>
+    <item android:state_focused="true">
+        <!--  Gradient Bg for listrow -->
+        <shape android:shape="rectangle" >
+            <gradient
+                android:startColor="#310889"
+                android:centerColor="#310879"
+                android:endColor="#310869"
+                android:angle="270" />
+        </shape>
+    </item>
+    <item >
+        <!--  Gradient Bg for listrow -->
+        <shape android:shape="rectangle" >
+            <gradient
+                android:startColor="#310889"
+                android:centerColor="#310879"
+                android:endColor="#310869"
+                android:angle="270" />
+        </shape>
+    </item>
+
+</selector>

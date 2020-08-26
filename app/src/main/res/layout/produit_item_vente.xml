@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="6dp"
+    android:layout_margin="3dp"
+    android:background="?android:attr/selectableItemBackground">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        android:padding="8dp"
+        android:background="?android:attr/selectableItemBackground">
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@id/etQte"
+            android:text="Line 1 Designation produit"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView"
+            android:layout_marginStart="8dp"
+            android:text="@string/quantit_restante"
+            android:textSize="15sp" />
+        <TextView
+            android:id="@+id/textView4Details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView"
+            android:layout_toEndOf="@id/textView4"
+            android:layout_marginStart="8dp"
+            android:text="0"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView4"
+            android:layout_marginStart="8dp"
+            android:text="@string/prix"
+            android:textSize="15sp" />
+        <TextView
+            android:id="@+id/textView3Details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView4"
+            android:layout_toEndOf="@id/textView3"
+            android:layout_marginStart="8dp"
+            android:text="0.00"
+            android:textSize="15sp" />
+
+        <EditText android:id="@+id/etQte"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:inputType="number"
+            android:padding="10dp"
+            android:layout_margin="15dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
