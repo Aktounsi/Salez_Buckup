@@ -4,11 +4,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 public class ProduitVenteAdapter extends RecyclerView.Adapter<ProduitVenteAdapter.ProduitVenteViewHolder> {
     private ArrayList<ProduitItemVente> mProduitList;
+    Boolean isVisible = false;
+
     public static class ProduitVenteViewHolder extends RecyclerView.ViewHolder {
         public TextView txtProduit;
         public TextView txtPrix;
@@ -20,8 +21,12 @@ public class ProduitVenteAdapter extends RecyclerView.Adapter<ProduitVenteAdapte
             txtQteRst = itemView.findViewById(R.id.textView4Details);
         }
     }
-    public ProduitVenteAdapter(ArrayList<ProduitItemVente> exampleList) {
+
+
+
+    public ProduitVenteAdapter(ArrayList<ProduitItemVente> exampleList,boolean isVisible) {
         mProduitList = exampleList;
+        this.isVisible = isVisible ;
     }
     @Override
     public ProduitVenteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,11 +38,17 @@ public class ProduitVenteAdapter extends RecyclerView.Adapter<ProduitVenteAdapte
     public void onBindViewHolder(ProduitVenteViewHolder holder, int position) {
         ProduitItemVente currentItem = mProduitList.get(position);
         holder.txtProduit.setText(currentItem.getTxtProduit());
-        holder.txtPrix.setText(String.valueOf(currentItem.getPrix()) );
+        holder.txtPrix.setText(String.valueOf(currentItem.getPrix()));
         holder.txtQteRst.setText(String.valueOf(currentItem.getTxtQteRst()));
+
     }
     @Override
     public int getItemCount() {
         return mProduitList.size();
     }
+
+    public long getItemId(int position){
+        return mProduitList.get(position).getId();
+    }
+
 }
