@@ -20,12 +20,10 @@
     <color name="BleuTurqclcl">#466E8B</color>
     <color name="whiteCust">#EBEBEB</color>
 
-
-
-
-
-
-
+    <color name="login_form_details">#CCFFFFFF</color>
+    <color name="login_form_details_light">#41FFFFFF</color>
+    <color name="login_form_details_medium">#66ffffff</color>
+    <color name="login_hint">#919191</color>
 
 
 </resources>

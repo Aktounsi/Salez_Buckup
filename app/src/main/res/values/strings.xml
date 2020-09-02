@@ -45,4 +45,11 @@
     <string name="refus">Refus achat</string>
     <string name="autre">Autre motif</string>
     <string name="absence">Absence gérant</string>
+
+    <string name="user_name">User name</string>
+    <string name="password">Password</string>
+    <string name="login_now">Login Now</string>
+    <string name="don_t_remember_password">Don\'t Remember password?</string>
+    <string name="dont_have_an_account">Don\'t have an account?</string>
+    <string name="or">or</string>
 </resources>

@@ -44,6 +44,13 @@
         <item name="android:progressDrawable">@drawable/circles_white</item>
     </style>
 
+    <style name="login" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">#3023AE</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
 
 
 </resources>

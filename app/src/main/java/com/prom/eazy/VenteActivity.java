@@ -18,6 +18,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,13 +39,15 @@ import java.util.TimerTask;
 
 public class VenteActivity extends AppCompatActivity implements BottomSheetDialog.BottomSheetListener,BottomSheetDialogValidate.BottomSheetListener, PrintingCallback {
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    //private RecyclerView mRecyclerView;
+    private ListView mRecyclerView;
+    private ProduitVenteAdapter mAdapter;
+    //private RecyclerView.LayoutManager mLayoutManager;
     DialogBoxSuccess dialogBoxSuccess = new DialogBoxSuccess(VenteActivity.this);
     DialogBoxError dialogBoxError = new DialogBoxError(VenteActivity.this);
     HashMap<Integer,Integer> hashMap = new HashMap<Integer,Integer>();
     Printing printing;
+    private ImageView mImgView;
 
 
 
@@ -67,13 +71,13 @@ public class VenteActivity extends AppCompatActivity implements BottomSheetDialo
 
         mRecyclerView = findViewById(R.id.recyclerView);
         //mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new ProduitVenteAdapter(exampleList,true);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        //mLayoutManager = new LinearLayoutManager(this);
+        mAdapter = new ProduitVenteAdapter(exampleList,this);
+        //mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         FloatingActionButton buttonMotifBottomSheet = (FloatingActionButton) findViewById(R.id.annuler_fab);
         FloatingActionButton buttonValidateCommandBottomSheet = (FloatingActionButton) findViewById(R.id.valider_fab);
-
+        mImgView = (ImageView) findViewById(R.id.back);
 
         buttonMotifBottomSheet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,17 +87,27 @@ public class VenteActivity extends AppCompatActivity implements BottomSheetDialo
             }
         });
 
+        mImgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+
         buttonValidateCommandBottomSheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("success","nombres "+mAdapter.getItemCount());
 
-                for (int i = 0; i < mAdapter.getItemCount(); i++) {
+                for (int i = 0; i < mAdapter.getCount(); i++) {
 
-                    RecyclerView.ViewHolder view = mRecyclerView.findViewHolderForAdapterPosition(i); Log.d("success","getChild "+i);
-                    RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(mRecyclerView.getChildAt(i));
+                    //View view = mRecyclerView.getChildAt(i);
+                        View view = getViewByPosition(i,mRecyclerView);
+
                     Log.d("success","getChild "+i);
-                    EditText nameEditText = (EditText) holder.itemView.findViewById(R.id.etQte); Log.d("success","findviewbyid  "+i);
+                    EditText nameEditText = (EditText) view.findViewById(R.id.etQte); Log.d("success","findviewbyid  "+i);
 
 
                     Log.d("success","nb"+i);
@@ -291,4 +305,18 @@ public class VenteActivity extends AppCompatActivity implements BottomSheetDialo
 
 
         }
+
+
+
+    public View getViewByPosition(int position, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition =firstListItemPosition + listView.getChildCount() - 1;
+
+        if (position < firstListItemPosition || position > lastListItemPosition ) {
+            return listView.getAdapter().getView(position, listView.getChildAt(position), listView);
+        } else {
+            final int childIndex = position - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
+    }
 }
