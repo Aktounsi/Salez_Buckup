@@ -1,6 +1,7 @@
 package com.prom.eazy;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.prom.eazy.ui.login.LoginActivity;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -99,14 +101,19 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (!SharedPref.getInstance(this).isLoggedIn()) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+        }else{
+
         frag = new HomeFragment();
         fragClient = new ClientFragment();
         fragStock = new StockFragment();
         ((HomeFragment) frag).setFragmentActionListener(this);
         ((ClientFragment) fragClient).setFragmentActionListener(this);
         ((StockFragment) fragStock).setFragmentActionListener(this);
-         //myViewFragment = frag.getView();
-         //hamb = (ImageView) myViewFragment.findViewById(R.id.hamb);
+        //myViewFragment = frag.getView();
+        //hamb = (ImageView) myViewFragment.findViewById(R.id.hamb);
 
         getSupportFragmentManager().beginTransaction()
 
@@ -115,7 +122,7 @@ public class MainActivity extends AppCompatActivity
                 .commit();
 /////////////////////////////////////////////////////////////////////////////
 
-         Thread thread = new Thread() {
+        Thread thread = new Thread() {
 
             @Override
             public void run() {
@@ -126,7 +133,7 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void run() {
                                 // update isAnimated here!
-                                isAnimated = false ;
+                                isAnimated = false;
                             }
                         });
                     }
@@ -140,18 +147,18 @@ public class MainActivity extends AppCompatActivity
 /////////////////////////////////////////////////////////////////////////////
         BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
         ///////////////////////////////////////////////////////////////////////////////
-        int[][] states = new int[][] {
+        int[][] states = new int[][]{
                 //new int[] { android.R.attr.state_enabled}, // enabled
                 //new int[] {-android.R.attr.state_enabled}, // disabled
-                new int[] {-android.R.attr.state_checked}, // unchecked
-                new int[] { android.R.attr.state_checked}  // pressed
+                new int[]{-android.R.attr.state_checked}, // unchecked
+                new int[]{android.R.attr.state_checked}  // pressed
         };
 
-        int[] colors = new int[] {
+        int[] colors = new int[]{
                 //Color.BLACK,
                 //Color.RED,
                 Color.GRAY,
-                Color.rgb(44,8,88)
+                Color.rgb(44, 8, 88)
         };
 
         ColorStateList myList = new ColorStateList(states, colors);
@@ -174,64 +181,64 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer,  R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View view, float v) {
 
-                if(selected==1) {
+                if (selected == 1) {
 
                     if (v > .5) {
-                         myViewFragment = frag.getView();
-                         hamb = (ImageView) myViewFragment.findViewById(R.id.hamb);
-                         animation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_hamb);
+                        myViewFragment = frag.getView();
+                        hamb = (ImageView) myViewFragment.findViewById(R.id.hamb);
+                        animation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_hamb);
                         hamb.startAnimation(animation);
                         isAnimated = true;
                     }
 
                     if ((v > .2) && (!isAnimated)) {
-                         myViewFragment = frag.getView();
-                         hamb = (ImageView) myViewFragment.findViewById(R.id.hamb);
-                         animation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_hamb);
+                        myViewFragment = frag.getView();
+                        hamb = (ImageView) myViewFragment.findViewById(R.id.hamb);
+                        animation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_hamb);
                         hamb.startAnimation(animation);
 
                     }
                 }
 
-                if(selected==2) {
+                if (selected == 2) {
 
                     if (v > .5) {
-                         myViewFragment = fragClient.getView();
-                         hamb = (ImageView) myViewFragment.findViewById(R.id.hambClient);
-                         animation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_hamb);
+                        myViewFragment = fragClient.getView();
+                        hamb = (ImageView) myViewFragment.findViewById(R.id.hambClient);
+                        animation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_hamb);
                         hamb.startAnimation(animation);
                         isAnimated = true;
                     }
 
                     if ((v > .2) && (!isAnimated)) {
-                         myViewFragment = fragClient.getView();
-                         hamb = (ImageView) myViewFragment.findViewById(R.id.hambClient);
-                         animation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_hamb);
+                        myViewFragment = fragClient.getView();
+                        hamb = (ImageView) myViewFragment.findViewById(R.id.hambClient);
+                        animation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_hamb);
                         hamb.startAnimation(animation);
 
                     }
                 }
 
-                if(selected==3) {
+                if (selected == 3) {
 
                     if (v > .5) {
-                         myViewFragment = fragStock.getView();
-                         hamb = (ImageView) myViewFragment.findViewById(R.id.hambStock);
-                         animation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_hamb);
+                        myViewFragment = fragStock.getView();
+                        hamb = (ImageView) myViewFragment.findViewById(R.id.hambStock);
+                        animation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_hamb);
                         hamb.startAnimation(animation);
                         isAnimated = true;
                     }
 
                     if ((v > .2) && (!isAnimated)) {
-                         myViewFragment = fragStock.getView();
-                         hamb = (ImageView) myViewFragment.findViewById(R.id.hambStock);
-                         animation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_hamb);
+                        myViewFragment = fragStock.getView();
+                        hamb = (ImageView) myViewFragment.findViewById(R.id.hambStock);
+                        animation = (Animation) AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_hamb);
                         hamb.startAnimation(animation);
 
                     }
@@ -261,6 +268,7 @@ public class MainActivity extends AppCompatActivity
         toggle.setDrawerIndicatorEnabled(false);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+    }
     }
 
     @Override

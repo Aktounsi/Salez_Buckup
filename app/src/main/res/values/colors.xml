@@ -24,6 +24,10 @@
     <color name="login_form_details_light">#41FFFFFF</color>
     <color name="login_form_details_medium">#66ffffff</color>
     <color name="login_hint">#919191</color>
+    <color name="red">#FC0000</color>
+    <color name="err_bg">#E6060606</color>
+
+
 
 
 </resources>
