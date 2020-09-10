@@ -16,22 +16,27 @@ public class ApiAgent {
 
     public static Retrofit getAgent() {
 
-        if (retrofit == null) {
+        //if (retrofit == null) {
             if(!SharedPref.getInstance(LoginActivity.getAppContext()).isServerOn()) {
                 retrofit = new Retrofit.Builder()
                         .baseUrl(BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-                Log.d("khraa","Rani f ApiAgent makach SharedPred");
+            Log.d("khraa","Rani f ApiAgent makach SharedPred");
+            Log.d("khraa","Rani f ApiAgent makach SharedPred : "+
+                    SharedPref.getInstance(LoginActivity.getAppContext()).serverOn());
+            SharedPref.getInstance(LoginActivity.getAppContext()).clearSrv();
+            Log.d("khraa","Rani f ApiAgent makach SharedPred : "+
+                    SharedPref.getInstance(LoginActivity.getAppContext()).serverOn());
             }else{
                 retrofit = new Retrofit.Builder()
-                        .baseUrl("http://192.168.59.2:808"+SharedPref.getInstance(LoginActivity.getAppContext()).serverOn()+"/PFE/sidebar/retrofit/")
+                        .baseUrl("http://"+SharedPref.getInstance(LoginActivity.getAppContext()).serverOn()+"/PFE/sidebar/retrofit/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 Log.d("khraa","Rani f ApiAgent kayen SharedPred");
 
             }
-        }
+        //}
         return retrofit;
     }
 }

@@ -19,6 +19,18 @@ public interface Api {
     @FormUrlEncoded
     Call<Model> login(@Field("username") String username, @Field("mdp") String mdp);
 
+    @POST("sign.php")
+    @FormUrlEncoded
+    Call<ModelSign> sign(@Field("username") String username, @Field("mdp") String mdp, @Field("phone") String phone
+            , @Field("name") String name, @Field("secondName") String secondName);
+
+    @POST("ifUsernameExist.php")
+    @FormUrlEncoded
+    Call<ModelUsername> ifExist(@Field("username") String username);
+
+    @POST("typeEtAutorisation.php")
+    @FormUrlEncoded
+    Call<ModelTypeAgent> type(@Field("username") String username);
 
 
 }

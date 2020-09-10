@@ -50,6 +50,8 @@ public class LoginActivity extends AppCompatActivity implements ServerDialog.Exa
      private EditText passwordEditText ;
      private Button loginButton ;
      private TextView errTextView;
+     private Button supp;
+     private TextView sign;
 
 
     private LoginViewModel loginViewModel;
@@ -67,6 +69,23 @@ public class LoginActivity extends AppCompatActivity implements ServerDialog.Exa
          loginButton = findViewById(R.id.login);
          loadingProgressBar = findViewById(R.id.loading);
          errTextView = findViewById(R.id.err);
+         sign = findViewById(R.id.sign);
+        supp = findViewById(R.id.supp);
+         supp.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 SharedPref.getInstance(LoginActivity.getAppContext()).clearSrv();
+
+             }
+         });
+
+         sign.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent intent = new Intent(LoginActivity.this,com.prom.eazy.SignActivity.class);
+                 startActivity(intent);
+             }
+         });
 
 
 
@@ -168,10 +187,10 @@ public class LoginActivity extends AppCompatActivity implements ServerDialog.Exa
                     try {
                         fun(usernameEditText.getText().toString(),
                                 passwordEditText.getText().toString());
-                        Log.d("khraa","TRY");
+                        Log.d("khraa"," try onclick loginBtn");
 
                     }catch (Exception e){
-                        Log.d("khraa","CATCH");
+                        Log.d("khraa","catch onclick loginBtn");
 
                     }
                 }
@@ -217,7 +236,7 @@ public class LoginActivity extends AppCompatActivity implements ServerDialog.Exa
                     //get username
                     //storing the user in shared preferences
                     SharedPref.getInstance(LoginActivity.getAppContext()).storeUserName(response.body().getUsername());
-                    Log.d("khraa","onResponse : exist");
+                    Log.d("khraa","onResponse : exist "+ SharedPref.getInstance(LoginActivity.getAppContext()).serverOn());
                     String welcome = getString(R.string.welcome) + response.body().getUsername();
                     // TODO : initiate successful logged in experience
                     Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
@@ -227,7 +246,7 @@ public class LoginActivity extends AppCompatActivity implements ServerDialog.Exa
 
 
                 }else {
-                    Log.d("khraa", "onResponse : doesn't exist");
+                    Log.d("khraa", "onResponse : doesn't exist "+ SharedPref.getInstance(LoginActivity.getAppContext()).serverOn());
                     //Toast.makeText(getApplicationContext(), "Username ou mdp incorrect !", Toast.LENGTH_LONG).show();
                     loadingProgressBar.setVisibility(View.GONE);
                     usernameEditText.setText("");
@@ -241,13 +260,16 @@ public class LoginActivity extends AppCompatActivity implements ServerDialog.Exa
 
             @Override
             public void onFailure(Call<Model> call, Throwable t) {
-                Log.d("khraa","onFailure");
+                Log.d("khraa","onFailure "+ SharedPref.getInstance(LoginActivity.getAppContext()).serverOn());
                 errTextView.setText("Tentative de connexion au serveur échouée !");
                 errTextView.setPadding(30,30,30,30);
+                SharedPref.getInstance(LoginActivity.getAppContext()).clearSrv();
+                loadingProgressBar.setVisibility(View.GONE);
                 //Thread.sleep(500);
                 openDialog();
                 //Toast.makeText(getApplicationContext(), "Tentative de connexion au serveur échouée !", Toast.LENGTH_SHORT).show();
             }
+
 
 
         });
@@ -272,10 +294,10 @@ public class LoginActivity extends AppCompatActivity implements ServerDialog.Exa
             SharedPref.getInstance(LoginActivity.getAppContext()).storeServer(server);
             fun(usernameEditText.getText().toString(),
                     passwordEditText.getText().toString());
-            Log.d("khraa","TRY");
+            Log.d("khraa","try valider boite de dialog");
 
         }catch (Exception e){
-            Log.d("khraa","CATCH");
+            Log.d("khraa","catch valider boite de dialog");
 
         }
 

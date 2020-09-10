@@ -7,16 +7,22 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.prom.eazy.ui.login.LoginActivity;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     TextView textViewIndex1;
@@ -24,6 +30,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     ImageView hamb = null;
     Animation animation;
     static boolean isAnimated = false;
+    TextView textViewIndex2;
+    ProgressBar progressBar;
 
 
     @Override
@@ -31,8 +39,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         textViewIndex1 = findViewById(R.id.textIndex1);
+        textViewIndex2 = findViewById(R.id.textIndex2);
         refreshBtn = findViewById(R.id.refresh);
         hamb =findViewById(R.id.hamb);
+        progressBar = findViewById(R.id.loadingg);
         //
         //check if user is logged in
         if (!SharedPref.getInstance(this).isLoggedIn()) {
@@ -40,16 +50,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             finish();
         }
         else{
-            //get autorisation value if (qte_bc == qte_bs)
-            boolean autorisation = false;
-            if(!autorisation){
-                    String loggedUsename = SharedPref.getInstance(this).LoggedInUser();
-                    textViewIndex1.setText("Bonjour "+loggedUsename+",");
-            }
-            else{
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-            }
+            String loggedUsename = SharedPref.getInstance(this).LoggedInUser();
+            textViewIndex1.setText("Bonjour "+loggedUsename+",");
+
+           /* //check if user accepted by admin
+            boolean inscrit = false;
+            if(!inscrit){
+                textViewIndex2.setText("Vous êtes un nouveau utilisateur, veillez attendre la réponse de l'administrateur.");
+            }else {
+
+
+                //get autorisation value if (qte_bc == qte_bs)
+                boolean autorisation = false;
+                if (!autorisation) {
+                    textViewIndex2.setText("Vous n'avez pas l'autorisation pour débuter votre mission.");
+                } else {
+                    startActivity(new Intent(this, MainActivity.class));
+                    finish();
+                }
+            }*/
+           fun(loggedUsename);
+            progressBar.setVisibility(View.VISIBLE);
+
         }
 
 
@@ -145,12 +167,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         refreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //get autorisation value if (qte_bc == qte_bs)
-                boolean autorisation = true;
-                if(autorisation){
-                    startActivity(new Intent(HomeActivity.this, MainActivity.class));
-                    finish();
-                }
+              /*  //check if user accepted by admin
+                boolean inscrit = true;
+                if (inscrit) {
+                    //get autorisation value if (qte_bc == qte_bs)
+                    boolean autorisation = true;
+                    if (autorisation) {
+                        startActivity(new Intent(HomeActivity.this, MainActivity.class));
+                        finish();
+                    }
+
+                }*/
+                String loggedUsename = SharedPref.getInstance(getApplicationContext()).LoggedInUser();
+                fun(loggedUsename);
+                progressBar.setVisibility(View.GONE);
+
+
             }
         });
 
@@ -185,5 +217,71 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    public void fun(String username) {
+        progressBar.setVisibility(View.VISIBLE);
+        Api api = ApiAgent.getAgent().create(Api.class);
+        Call<ModelTypeAgent> type = api.type(username);
+        type.enqueue(new Callback<ModelTypeAgent>() {
+            @Override
+            public void onResponse(Call<ModelTypeAgent> call, Response<ModelTypeAgent> response) {
+                if (response.body().getIsSuccess() == 1) {
+                    //account exist
+                    //check account type : v->vendeur, c->Chauffeur, t->temporaire
+                    Log.d("khraa","1");
+                    Character typeAgent = new Character(response.body().getType());
+                    Log.d("khraa","2");
+
+                    if(typeAgent.equals(new Character('c'))){
+                        textViewIndex2.setText("Un administrateur vous a désigné comme chauffeur.");
+
+                    }
+                    if(typeAgent.equals(new Character('t'))){
+                        textViewIndex2.setText("Vous êtes un nouveau utilisateur, veillez " +
+                                "attendre la réponse de l'administrateur.");
+
+                    }
+                    if(typeAgent.equals(new Character('v'))){
+                        //check autorisation debut de journee
+                        Log.d("khraa","3");
+
+                        if(response.body().getAutorisation() == 1){
+                            Log.d("khraa","4");
+                            startActivity(new Intent(HomeActivity.this, MainActivity.class));
+                            finish();
+
+                        }else{
+                            textViewIndex2.setText("Vous n'avez pas l'autorisation pour débuter votre mission, " +
+                                    "veuillez demander aux administrateurs de vérifier les quantitées chargées.");
+
+                        }
+
+                    }
+                    if(typeAgent.equals(new Character('p'))){
+                        startActivity(new Intent(HomeActivity.this, MainPointeurActivity.class));
+                        finish();
+                    }
+
+                } else {
+                    //account doesn't exist
+                    textViewIndex2.setText("Ce compte est supprimé par un administrateur, veuillez contacter un administrateur.");
+
+                    //SharedPref.getInstance(getApplicationContext()).logout();
+
+                }
+                progressBar.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onFailure(Call<ModelTypeAgent> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+                textViewIndex2.setText("La connexion au serveur a échouée.");
+
+
+            }
+        });
+
+    }
 
 }
+

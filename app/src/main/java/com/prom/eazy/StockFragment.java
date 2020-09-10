@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class StockFragment extends Fragment {
 
-    FragmentActionListener fragmentActionListener ;
+    FragmentActionListener fragmentActionListener;
     View rootView ;
     Context context;
     ImageView hamb;

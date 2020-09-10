@@ -102,7 +102,7 @@ public class SharedPref {
         editor.clear();
         editor.commit();
         storeUserName(user);
-        mCtx.startActivity(new Intent(mCtx, MainActivity.class));
+        //mCtx.startActivity(new Intent(mCtx, MainActivity.class));
     }
 
 }

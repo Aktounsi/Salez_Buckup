@@ -65,4 +65,9 @@
     <string name="vous_n_avez_pas_l_autorisation_pour_d_buter_votre_mission">Vous n\'avez pas l\'autorisation pour débuter votre mission.</string>
     <string name="logout">Déconnexion</string>
     <string name="username">Username</string>
+    <string name="name">Name</string>
+    <string name="second_name">second name</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="bon_de_sortie">Bon de sortie</string>
+    <string name="bon_de_retour">Bon de retour</string>
 </resources>
