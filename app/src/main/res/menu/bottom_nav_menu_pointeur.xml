@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_assignment_black_24dp"
+        android:icon="@drawable/bon_sortie"
         android:title="@string/bon_de_sortie" />
 
     <item
         android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_watch_later_black_24dp"
+        android:icon="@drawable/retour"
         android:title="@string/bon_de_retour" />
 
 
