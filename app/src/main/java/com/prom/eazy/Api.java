@@ -32,6 +32,15 @@ public interface Api {
     @FormUrlEncoded
     Call<ModelTypeAgent> type(@Field("username") String username);
 
+    @POST("signPt.php")
+    @FormUrlEncoded
+    Call<ModelSign> signPt(@Field("username") String username, @Field("mdp") String mdp, @Field("phone") String phone
+            , @Field("name") String name, @Field("secondName") String secondName);
+
+    @POST("getAgents.php")
+    @FormUrlEncoded
+    Call<ModelListAgents> getAgents(@Field("username") String username);
+
 
 }
 

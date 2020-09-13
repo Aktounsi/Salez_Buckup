@@ -240,6 +240,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                 "attendre la réponse de l'administrateur.");
 
                     }
+                    if(typeAgent.equals(new Character('n'))){
+                        textViewIndex2.setText("Vous êtes un nouveau utilisateur, veillez " +
+                                "attendre la réponse de l'administrateur.");
+
+                    }
+
                     if(typeAgent.equals(new Character('v'))){
                         //check autorisation debut de journee
                         Log.d("khraa","3");

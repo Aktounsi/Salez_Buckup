@@ -13,6 +13,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +48,9 @@ public class SignActivity extends AppCompatActivity implements ServerDialog.Exam
 
     private int enableButton = 0;
 
+    RadioGroup radioGroup;
+    RadioButton radioButton;
+
 
 
     @Override
@@ -66,6 +71,8 @@ public class SignActivity extends AppCompatActivity implements ServerDialog.Exam
         loadingProgressBar = findViewById(R.id.loading);
         errTextView = findViewById(R.id.err);
         log = findViewById(R.id.sign);
+        radioGroup = findViewById(R.id.radioGroupType);
+
 
         log.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,13 +94,21 @@ public class SignActivity extends AppCompatActivity implements ServerDialog.Exam
                         openDialog();
                     }
                     else{
-                        try {
-                            fun(usernameEditText.getText().toString(),
+                        try { if(radioGroup.getCheckedRadioButtonId()==R.id.radioButtonAgent){
+                                fun(usernameEditText.getText().toString(),
                                     passwordEditText.getText().toString(),
                                     phoneEditText.getText().toString(),
                                     nameEditText.getText().toString(),
                                     secondNameEditText.getText().toString());
                             Log.d("khraa","TRY");
+                        }else{
+                            funPt(usernameEditText.getText().toString(),
+                                    passwordEditText.getText().toString(),
+                                    phoneEditText.getText().toString(),
+                                    nameEditText.getText().toString(),
+                                    secondNameEditText.getText().toString());
+                            Log.d("khraa","TRY");
+                        }
 
                         }catch (Exception e){
                             Log.d("khraa","CATCH");
@@ -117,12 +132,21 @@ public class SignActivity extends AppCompatActivity implements ServerDialog.Exam
             }
             else{
                 try {
-                    fun(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString(),
-                            phoneEditText.getText().toString(),
-                            nameEditText.getText().toString(),
-                            secondNameEditText.getText().toString());
-                    Log.d("khraa"," try onclick loginBtn");
+                    if(radioGroup.getCheckedRadioButtonId()==R.id.radioButtonAgent){
+                        fun(usernameEditText.getText().toString(),
+                                passwordEditText.getText().toString(),
+                                phoneEditText.getText().toString(),
+                                nameEditText.getText().toString(),
+                                secondNameEditText.getText().toString());
+                        Log.d("khraa","TRY");
+                    }else{
+                        funPt(usernameEditText.getText().toString(),
+                                passwordEditText.getText().toString(),
+                                phoneEditText.getText().toString(),
+                                nameEditText.getText().toString(),
+                                secondNameEditText.getText().toString());
+                        Log.d("khraa","TRY");
+                    }
 
                 }catch (Exception e){
                     Log.d("khraa","catch onclick loginBtn");
@@ -383,6 +407,56 @@ public class SignActivity extends AppCompatActivity implements ServerDialog.Exam
 
     }
 
+
+
+    public void funPt(String username,String password,String phone, String name,String secondName){
+        Api api = ApiAgent.getAgent().create(Api.class);
+        Call<ModelSign> sign = api.signPt(username,password,phone,name,secondName);
+        sign.enqueue(new Callback<ModelSign>() {
+            @Override
+            public void onResponse(Call<ModelSign> call, Response<ModelSign> response) {
+                if (response.body().getIsSuccess() == 1) {
+                    //get username
+                    //storing the user in shared preferences
+                    SharedPref.getInstance(SignActivity.getAppContext()).storeUserName(response.body().getUsername());
+                    Log.d("khraa","onResponse : account created  "+ SharedPref.getInstance(SignActivity.getAppContext()).serverOn());
+                    String welcome = getString(R.string.welcome) + response.body().getUsername();
+                    // TODO : initiate successful logged in experience
+                    Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(SignActivity.this,com.prom.eazy.HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+
+
+                }else {
+                    Log.d("khraa", "onResponse : account not created "+ SharedPref.getInstance(SignActivity.getAppContext()).serverOn());
+                    //Toast.makeText(getApplicationContext(), "Username ou mdp incorrect !", Toast.LENGTH_LONG).show();
+                    loadingProgressBar.setVisibility(View.GONE);
+                    usernameEditText.setText("");
+                    passwordEditText.setText("");
+                    errTextView.setText("Veillez vérifier les champs !");
+                    errTextView.setPadding(30,30,30,30);
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ModelSign> call, Throwable t) {
+                Log.d("khraa","onFailure "+ SharedPref.getInstance(SignActivity.getAppContext()).serverOn());
+                errTextView.setText("Tentative de connexion au serveur échouée !");
+                errTextView.setPadding(30,30,30,30);
+                SharedPref.getInstance(SignActivity.getAppContext()).clearSrv();
+                loadingProgressBar.setVisibility(View.GONE);
+                //Thread.sleep(500);
+                openDialog();
+                //Toast.makeText(getApplicationContext(), "Tentative de connexion au serveur échouée !", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
     public static Context getAppContext() {
         return SignActivity.context;
     }
@@ -399,11 +473,21 @@ public class SignActivity extends AppCompatActivity implements ServerDialog.Exam
 
         try {
             SharedPref.getInstance(SignActivity.getAppContext()).storeServer(server);
-            fun(usernameEditText.getText().toString(),
-                    passwordEditText.getText().toString(),
-                    phoneEditText.getText().toString(),
-                    nameEditText.getText().toString(),
-                    secondNameEditText.getText().toString());
+            if(radioGroup.getCheckedRadioButtonId()==R.id.radioButtonAgent){
+                fun(usernameEditText.getText().toString(),
+                        passwordEditText.getText().toString(),
+                        phoneEditText.getText().toString(),
+                        nameEditText.getText().toString(),
+                        secondNameEditText.getText().toString());
+                Log.d("khraa","TRY");
+            }else{
+                funPt(usernameEditText.getText().toString(),
+                        passwordEditText.getText().toString(),
+                        phoneEditText.getText().toString(),
+                        nameEditText.getText().toString(),
+                        secondNameEditText.getText().toString());
+                Log.d("khraa","TRY");
+            }
             Log.d("khraa","try valider boite de dialog");
 
         }catch (Exception e){

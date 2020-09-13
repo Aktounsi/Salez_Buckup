@@ -70,4 +70,9 @@
     <string name="confirm_password">Confirm password</string>
     <string name="bon_de_sortie">Bon de sortie</string>
     <string name="bon_de_retour">Bon de retour</string>
+    <string name="agent">Agent</string>
+    <string name="pointeur">Pointeur</string>
+    <string name="radio_group_type_sign">Vous êtes un :</string>
+    <string name="absent">Absent</string>
+    <string name="vehicule_en_panne">Véhicule en panne</string>
 </resources>

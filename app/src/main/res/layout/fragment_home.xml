@@ -228,7 +228,8 @@
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@id/scroll"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_margin="20dp">
+            android:layout_margin="20dp"
+            >
 
             <RadioButton android:id="@+id/ventes"
                 android:layout_width="85dp"
