@@ -29,6 +29,11 @@
     <color name="red">#FC0000</color>
     <color name="err_bg">#E6060606</color>
 
+    <color name="placeholder_bg_cl">#dddddd</color>
+    <color name="placeholder_bg">#C9C9C9</color>
+
+
+
 
 
 

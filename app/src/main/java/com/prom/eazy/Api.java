@@ -1,8 +1,13 @@
 package com.prom.eazy;
 
+import java.util.HashMap;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 
 /**
@@ -41,6 +46,25 @@ public interface Api {
     @FormUrlEncoded
     Call<ModelListAgents> getAgents(@Field("username") String username);
 
+    @POST("insertBonDeRetour.php")
+    @FormUrlEncoded
+    Call<ModelIsSuccess> insertBonDeRetour(@Field("username") String username, @Field("code_vehicule") int code_vehicule, @Field("code_ag") int code_ag, @Field("sec") int sec);
+
+    @POST("insertQteBonDeRetour.php")
+    @FormUrlEncoded
+    Call<ModelIsSuccess> insertQteBonDeRetour(@Field("code_pr") int code_pr, @Field("qte") int qte, @Field("code_bp") int code_bp);
+
+    @POST("deleteQteBonDeRetour.php")
+    @FormUrlEncoded
+    Call<ModelIsSuccess> deleteQteBonDeRetour(@Field("code_bp") int code_bp);
+
+    @POST("getListeVendeursPointes.php")
+    @FormUrlEncoded
+    Call<ModelListeVendeursPointes> getListeVendeursPointes(@Field("username") String username);
+
+    @POST("getListProducts.php")
+    @FormUrlEncoded
+    Call<ModelListProduct> getListProducts(@Field("username") String username);
 
 }
 

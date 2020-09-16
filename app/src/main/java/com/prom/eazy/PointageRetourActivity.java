@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mazenrashed.printooth.Printooth;
 import com.mazenrashed.printooth.data.printable.Printable;
@@ -27,17 +28,29 @@ import com.mazenrashed.printooth.utilities.PrintingCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PointageRetourActivity extends AppCompatActivity
         implements BottomSheetDialogPt.BottomSheetListener,BottomSheetDialogValidatePt.BottomSheetListener, PrintingCallback {
+    public static final String EXTRA_INFO_AGENT = "com.prom.eazy.EXTRA_INFO_AGENT";
     private ListView mRecyclerView;
     private ProduitVenteAdapter mAdapter;
+    private ShimmerFrameLayout mShimmerViewContainer;
+    ArrayList<ProduitItemVente> exampleList;
+
 
     DialogBoxSuccess dialogBoxSuccess = new DialogBoxSuccess(PointageRetourActivity.this);
     DialogBoxError dialogBoxError = new DialogBoxError(PointageRetourActivity.this);
     HashMap<Integer,Integer> hashMap = new HashMap<Integer,Integer>();
     Printing printing;
     private ImageView mImgView;
+    VendeurItemModel vendeurFromIntent;// = (VendeurItemModel) getIntent().getSerializableExtra(EXTRA_INFO_AGENT);
+
 
 
 
@@ -46,13 +59,19 @@ public class PointageRetourActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pointage_retour);
 
-        ArrayList<ProduitItemVente> exampleList = new ArrayList<>();
-        exampleList.add(new ProduitItemVente(1, "LOYA 1KG" , 250.99f, 10));
-        exampleList.add(new ProduitItemVente(2, "LOYA 2KG" , 400.99f, 30));
-        exampleList.add(new ProduitItemVente(3, "AMILA 1KG" , 300.99f, 20));
-        exampleList.add(new ProduitItemVente(4, "TWISCO 1KG" , 500.99f, 10));
-        exampleList.add(new ProduitItemVente(5, "LOYA 5KG" , 6000.99f, 10));
-        exampleList.add(new ProduitItemVente(6, "LOYA 2KG" , 25.99f, 20));
+        vendeurFromIntent = (VendeurItemModel) getIntent().getSerializableExtra(EXTRA_INFO_AGENT);
+
+        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmer();
+
+        exampleList = new ArrayList<>();
+        getListProducts();
+        //exampleList.add(new ProduitItemVente(1, "LOYA 1KG" , 250.99f, 10));
+        //exampleList.add(new ProduitItemVente(2, "LOYA 2KG" , 400.99f, 30));
+        //exampleList.add(new ProduitItemVente(3, "AMILA 1KG" , 300.99f, 20));
+        //exampleList.add(new ProduitItemVente(4, "TWISCO 1KG" , 500.99f, 10));
+        //exampleList.add(new ProduitItemVente(5, "LOYA 5KG" , 6000.99f, 10));
+        //exampleList.add(new ProduitItemVente(6, "LOYA 2KG" , 25.99f, 20));
 
         if(printing != null) printing.setPrintingCallback(this);
 
@@ -109,7 +128,7 @@ public class PointageRetourActivity extends AppCompatActivity
                     } catch(NumberFormatException ex) {
                         qte = 0; Log.d("success","catch"+qte);
                     }
-                    int id = (int) mAdapter.getItemId(i); Log.d("success","getId "+id);
+                    int id = mAdapter.getItem(i).getId(); Log.d("success","getId "+id);
                     if(qte>0) hashMap.put(id,qte); Log.d("success","hashmap put");
                     Log.d("success","nb"+i);
                 }
@@ -160,7 +179,6 @@ public class PointageRetourActivity extends AppCompatActivity
             @Override
             public void run() {
                 finish();
-                //Log.d("success","aaaaaall");
             }
         }, 1800);
         //update interface telle que réalisation
@@ -185,6 +203,13 @@ public class PointageRetourActivity extends AppCompatActivity
             int id = (int) mAdapter.getItemId(i);
             if(qte>0) hashMap.put(id,qte);
         }*/
+        VendeurItemModel v = (VendeurItemModel) getIntent().getSerializableExtra(EXTRA_INFO_AGENT);
+        int code_ag = v.getCode_agent();
+        int code_vehicule = Integer.parseInt(v.getCode_vehicule());
+        int sec = Integer.parseInt(v.getCode_sec());
+        String username = SharedPref.getInstance(getApplicationContext()).LoggedInUser();
+
+        fun(username,code_vehicule,code_ag,sec);
 
         boolean  insert = true;
         //Imprimer if insert=true
@@ -197,7 +222,7 @@ public class PointageRetourActivity extends AppCompatActivity
             }
         }
         //afficher boite de dialogue RESULT: SUCCESS/ERROR DUREE: 2s
-        if(insert) {
+        /*if(insert) {
 
             dialogBoxSuccess.startSuccessDialog();
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -216,7 +241,7 @@ public class PointageRetourActivity extends AppCompatActivity
                     //Log.d("success","aaaaaall");
                 }
             }, 1500);
-        }
+        }*/
         //dialogBoxSuccess.animateDialog();
 
 
@@ -228,7 +253,7 @@ public class PointageRetourActivity extends AppCompatActivity
                 finish();
                 //Log.d("success","aaaaaall");
             }
-        }, 1800);
+        }, 2400);
         //update interface telle que stock (qte rst)
 
     }
@@ -315,4 +340,164 @@ public class PointageRetourActivity extends AppCompatActivity
             return listView.getChildAt(childIndex);
         }
     }
+
+    public void fun(String username, int code_vehicule, int code_ag, int sec){
+        Api api = ApiAgent.getAgent().create(Api.class);
+        Call<ModelIsSuccess> getAgents = api.insertBonDeRetour(username,code_vehicule,code_ag,sec);
+        getAgents.enqueue(new Callback<ModelIsSuccess>() {
+            @Override
+            public void onResponse(Call<ModelIsSuccess> call, Response<ModelIsSuccess> response) {
+                if (response.body().getIsSuccess() == 1) {
+                    ///
+                    for (Integer key: hashMap.keySet()) {
+                    funQtes(key.intValue(),hashMap.get(key).intValue(),response.body().getCode_bp());
+                    }
+                    ///
+
+                }else { Log.d("khraa","onsuccess but");
+                    dialogBoxError.startSuccessDialog();
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialogBoxError.dissmissDialog();
+                            //Log.d("success","aaaaaall");
+                        }
+                    }, 1500);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ModelIsSuccess> call, Throwable t) {
+                Log.d("khraa","onsuccess");
+                dialogBoxError.startSuccessDialog();
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogBoxError.dissmissDialog();
+                        //Log.d("success","aaaaaall");
+                    }
+                }, 1500);
+            }
+        });
+    }
+
+
+    public void funQtes(int code_pr,int qte,int code_bp){
+        Api api = ApiAgent.getAgent().create(Api.class);
+        Call<ModelIsSuccess> getAgents = api.insertQteBonDeRetour(code_pr,qte,code_bp);
+        getAgents.enqueue(new Callback<ModelIsSuccess>() {
+            @Override
+            public void onResponse(Call<ModelIsSuccess> call, Response<ModelIsSuccess> response) {
+                if (response.body().getIsSuccess() == 1) {
+                    Log.d("khraa","funQtes onresponse 1"+response.body().getMessage());
+
+                    if(code_pr == hashMap.size()){
+                        Log.d("khraa","onsuccess");
+                        dialogBoxSuccess.startSuccessDialog();
+                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialogBoxSuccess.dissmissDialog();
+                            }
+                        }, 1500);
+
+
+                        RetourFragment.hashmap.put(new Integer(vendeurFromIntent.getCode_agent()),new MyEntry<>(vendeurFromIntent,new Boolean(true)));
+
+                    }
+
+                }else {
+                    Log.d("khraa","funQtes onresponse 0"+response.body().getMessage());
+                    //supprimer tous les qte de ce bon + supprimer ce bon
+                    deleteBonDeRetour(code_bp);
+                    //set the RetourFragment hashmap value to false so he can click him again
+                    RetourFragment.hashmap.put(new Integer(vendeurFromIntent.getCode_agent()),new MyEntry<>(vendeurFromIntent,new Boolean(false)));
+
+
+                    //box dialog error
+                    dialogBoxError.startSuccessDialog();
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialogBoxError.dissmissDialog();
+                        }
+                    }, 1500);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelIsSuccess> call, Throwable t) {
+                Log.d("khraa","funQtes onfailure ");
+                //supprimer tous les qte de ce bon + supprimer ce bon
+                deleteBonDeRetour(code_bp);
+                //set the RetourFragment hashmap value to false so he can click him again
+                RetourFragment.hashmap.put(new Integer(vendeurFromIntent.getCode_agent()),new MyEntry<>(vendeurFromIntent,new Boolean(false)));
+
+                //box dialog error
+                dialogBoxError.startSuccessDialog();
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogBoxError.dissmissDialog();
+                    }
+                }, 1500);
+
+            }
+        });
+    }
+
+    public void deleteBonDeRetour(int code_bp){
+        Api api = ApiAgent.getAgent().create(Api.class);
+        Call<ModelIsSuccess> delete = api.deleteQteBonDeRetour(code_bp);
+        delete.enqueue(new Callback<ModelIsSuccess>() {
+            @Override
+            public void onResponse(Call<ModelIsSuccess> call, Response<ModelIsSuccess> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ModelIsSuccess> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getListProducts(){
+        Log.d("khraa","getListProducts()1");
+        Api api = ApiAgent.getAgent().create(Api.class);
+        Log.d("khraa","getListProducts(2)");
+
+        Call<ModelListProduct> getList = api.getListProducts("pointeur");
+        Log.d("khraa","getListProducts(3)");
+
+        getList.enqueue(new Callback<ModelListProduct>() {
+
+            @Override
+            public void onResponse(Call<ModelListProduct> call, Response<ModelListProduct> response) {
+                Log.d("khraa","getListProducts() response");
+
+                if (response.body().getIsSuccess() == 1) {
+                    Log.d("khraa","1");
+                    for (ProductItemModel prod : response.body().getProductsList()) {
+                        exampleList.add(new ProduitItemVente(prod.getCode_pr(), prod.getDesignation() , (float) prod.getPrix_u(), prod.getStock()));
+                    }
+                    mAdapter.notifyDataSetChanged();
+                    mShimmerViewContainer.stopShimmer();
+                    mShimmerViewContainer.setVisibility(View.GONE);
+
+                }else{
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ModelListProduct> call, Throwable t) {
+                Log.d("khraa","getListProducts() fail");
+
+            }
+        });
+    }
+
 }

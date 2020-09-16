@@ -2,6 +2,7 @@ package com.prom.eazy;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,15 +16,21 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RetourFragment extends Fragment {
-    public static final String EXTRA_ID_AGENT = "com.prom.eazy.EXTRA_ID_AGENT";
+    public static final String EXTRA_INFO_AGENT = "com.prom.eazy.EXTRA_INFO_AGENT";
+    public static HashMap<Integer,MyEntry<VendeurItemModel,Boolean>> hashmap;
     ArrayList<VendeurItem> vendeurList;
 
     FragmentActionListener fragmentActionListener;
@@ -33,6 +40,8 @@ public class RetourFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private VendeurAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private ShimmerFrameLayout mShimmerViewContainer;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
     public RetourFragment() {
@@ -54,8 +63,15 @@ public class RetourFragment extends Fragment {
     }
 
     private void initUI(){
+        hashmap = new HashMap<>();
         context  = getContext();
         hamb = (ImageView) rootView.findViewById(R.id.hamb);
+        mShimmerViewContainer = rootView.findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmer();
+        //mShimmerViewContainer.setScrollBarFadeDuration(1500);
+        swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeColors(Color.rgb(98,38,158));
+
         hamb.setClickable(true);
         hamb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,10 +108,21 @@ public class RetourFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 int id = vendeurList.get(position).getId();
+                if(!hashmap.get(id).getValue()){
 
                 Intent intent = new Intent(getActivity(), PointageRetourActivity.class);
-                intent.putExtra(EXTRA_ID_AGENT, id);
-                startActivity(intent);
+                intent.putExtra(EXTRA_INFO_AGENT, hashmap.get(id).getKey());
+                    startActivity(intent);
+                }
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                vendeurList.clear();
+                String loggedUsename = SharedPref.getInstance(getActivity().getApplicationContext()).LoggedInUser();
+                fun(loggedUsename);
             }
         });
 
@@ -109,11 +136,18 @@ public class RetourFragment extends Fragment {
             @Override
             public void onResponse(Call<ModelListAgents> call, Response<ModelListAgents> response) {
                 if (response.body().getIsSuccess() == 1) {
+                    hashmap.clear();
                     Log.d("khraa","on response 1");
-                    for (VendeurItemModel vi : response.body().getVendeursList())
-                    vendeurList.add(new VendeurItem(vi.getCode_agent(),R.drawable.ic_list_agents,
-                            vi.getNom()+vi.getPrenom(),vi.getMatricule(),vi.getCode_sec()));
+
+                    for (VendeurItemModel vi : response.body().getVendeursList()) {
+                        vendeurList.add(new VendeurItem(vi.getCode_agent(), R.drawable.ic_list_agents,
+                                vi.getNom() + vi.getPrenom(), vi.getMatricule(), vi.getCode_sec()));
+                        hashmap.put(new Integer(vi.getCode_agent()),new MyEntry<>(vi,new Boolean(false)));
+                    }
                     mAdapter.notifyDataSetChanged();
+                    mShimmerViewContainer.stopShimmer();
+                    mShimmerViewContainer.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
                 }else {
                     Log.d("khraa","on response 0");
 
@@ -127,5 +161,33 @@ public class RetourFragment extends Fragment {
 
             }
             });
+    }
+
+    public void refreshMyHashMap(String username){
+        Api api = ApiAgent.getAgent().create(Api.class);
+        Call<ModelListeVendeursPointes> getListeVendeurPointes = api.getListeVendeursPointes(username);
+        getListeVendeurPointes.enqueue(new Callback<ModelListeVendeursPointes>() {
+            @Override
+            public void onResponse(Call<ModelListeVendeursPointes> call, Response<ModelListeVendeursPointes> response) {
+                if (response.body().getIsSuccess() == 1) {
+                    for(int element : response.body().getListeVendeursPointes()){
+                        VendeurItemModel value = hashmap.get(new Integer(element)).getKey();
+                        hashmap.put(new Integer(element),new MyEntry<>(value,new Boolean(false)));
+                    }
+
+
+
+                }else{
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ModelListeVendeursPointes> call, Throwable t) {
+
+            }
+        });
+
     }
 }

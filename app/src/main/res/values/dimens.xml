@@ -45,5 +45,8 @@
     <dimen name="LineChartWidth">500dp</dimen>
     <dimen name="LineChartHeight">300dp</dimen>
     <dimen name="SlidingPanelHeight">300dp</dimen>
+    <dimen name="activity_padding">16dp</dimen>
+    <dimen name="placeholder_image">50dp</dimen>
+    <dimen name="placeholder_text_height">8dp</dimen>
 
 </resources>
