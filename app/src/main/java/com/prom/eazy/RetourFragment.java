@@ -23,6 +23,8 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +32,7 @@ import retrofit2.Response;
 
 public class RetourFragment extends Fragment {
     public static final String EXTRA_INFO_AGENT = "com.prom.eazy.EXTRA_INFO_AGENT";
+    public static final int timeInterval = 60000;
     public static HashMap<Integer,MyEntry<VendeurItemModel,Boolean>> hashmap;
     ArrayList<VendeurItem> vendeurList;
 
@@ -42,6 +45,8 @@ public class RetourFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ShimmerFrameLayout mShimmerViewContainer;
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    //String loggedUsename;
 
 
     public RetourFragment() {
@@ -63,7 +68,9 @@ public class RetourFragment extends Fragment {
     }
 
     private void initUI(){
+        //String loggedUsename = SharedPref.getInstance(getActivity().getApplicationContext()).LoggedInUser();
         hashmap = new HashMap<>();
+
         context  = getContext();
         hamb = (ImageView) rootView.findViewById(R.id.hamb);
         mShimmerViewContainer = rootView.findViewById(R.id.shimmer_view_container);
@@ -82,7 +89,6 @@ public class RetourFragment extends Fragment {
                     hamb.startAnimation(animation);
                 }
 
-
             }
         });
 
@@ -95,6 +101,8 @@ public class RetourFragment extends Fragment {
         //vendeurList.add(new VendeurItem(1,R.drawable.ic_list_agents,"Mohammed SALMI","1262711216","5"));
         String loggedUsename = SharedPref.getInstance(getActivity().getApplicationContext()).LoggedInUser();
         fun(loggedUsename);
+        //refreshMyHashMap(loggedUsename);
+
 
         mRecyclerView = rootView.findViewById(R.id.recyclerView);
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -107,6 +115,7 @@ public class RetourFragment extends Fragment {
         mAdapter.setOnItemClickListener(new VendeurAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                refreshMyHashMap(loggedUsename);
                 int id = vendeurList.get(position).getId();
                 if(!hashmap.get(id).getValue()){
 
@@ -121,11 +130,22 @@ public class RetourFragment extends Fragment {
             @Override
             public void onRefresh() {
                 vendeurList.clear();
+                mAdapter.notifyDataSetChanged();
+                mShimmerViewContainer.setVisibility(View.VISIBLE);
+                mShimmerViewContainer.startShimmer();
                 String loggedUsename = SharedPref.getInstance(getActivity().getApplicationContext()).LoggedInUser();
                 fun(loggedUsename);
             }
         });
 
+        Timer _timer = new Timer();
+
+        _timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                refreshMyHashMap(loggedUsename);
+            }
+        }, timeInterval);
 
     }
 
@@ -141,13 +161,15 @@ public class RetourFragment extends Fragment {
 
                     for (VendeurItemModel vi : response.body().getVendeursList()) {
                         vendeurList.add(new VendeurItem(vi.getCode_agent(), R.drawable.ic_list_agents,
-                                vi.getNom() + vi.getPrenom(), vi.getMatricule(), vi.getCode_sec()));
+                                vi.getNom() + vi.getPrenom() +" et "+ vi.getChauffeur(), vi.getMatricule(), vi.getCode_sec()));
                         hashmap.put(new Integer(vi.getCode_agent()),new MyEntry<>(vi,new Boolean(false)));
                     }
                     mAdapter.notifyDataSetChanged();
                     mShimmerViewContainer.stopShimmer();
                     mShimmerViewContainer.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
+                    refreshMyHashMap(username);
+
                 }else {
                     Log.d("khraa","on response 0");
 
@@ -172,10 +194,8 @@ public class RetourFragment extends Fragment {
                 if (response.body().getIsSuccess() == 1) {
                     for(int element : response.body().getListeVendeursPointes()){
                         VendeurItemModel value = hashmap.get(new Integer(element)).getKey();
-                        hashmap.put(new Integer(element),new MyEntry<>(value,new Boolean(false)));
+                        hashmap.put(new Integer(element),new MyEntry<>(value,new Boolean(true)));
                     }
-
-
 
                 }else{
 

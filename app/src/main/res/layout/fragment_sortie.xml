@@ -50,12 +50,63 @@
 
 
     </RelativeLayout>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingTop="0dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="0dp"
+        android:background="@android:color/darker_gray"
+        >
+
+        <!-- Adding 3 rows of placeholders -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/shimmer_item" />
+
+            <include layout="@layout/shimmer_item" />
+
+            <include layout="@layout/shimmer_item" />
+
+            <include layout="@layout/shimmer_item" />
+
+            <include layout="@layout/shimmer_item" />
+
+            <include layout="@layout/shimmer_item" />
+
+            <include layout="@layout/shimmer_item" />
+
+            <include layout="@layout/shimmer_item" />
+
+
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="60dp"
+        >
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray"
         android:padding="4dp"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 </LinearLayout>

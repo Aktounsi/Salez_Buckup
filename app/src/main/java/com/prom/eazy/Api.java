@@ -62,9 +62,33 @@ public interface Api {
     @FormUrlEncoded
     Call<ModelListeVendeursPointes> getListeVendeursPointes(@Field("username") String username);
 
+    @POST("getListeVendeursPointesSortie.php")
+    @FormUrlEncoded
+    Call<ModelListeVendeursPointes> getListeVendeursPointesSortie(@Field("username") String username);
+
+    @POST("getAgentsSortie.php")
+    @FormUrlEncoded
+    Call<ModelListAgents> getAgentsSortie(@Field("username") String username);
+
     @POST("getListProducts.php")
     @FormUrlEncoded
     Call<ModelListProduct> getListProducts(@Field("username") String username);
+
+    @POST("insertBonDeSortie.php")
+    @FormUrlEncoded
+    Call<ModelIsSuccess> insertBonDeSortie(@Field("username") String username, @Field("code_vehicule") int code_vehicule, @Field("code_ag") int code_ag, @Field("sec") int sec);
+
+    @POST("insertQteBonDeRetour.php")
+    @FormUrlEncoded
+    Call<ModelIsSuccess> insertQteBonDeSortie(@Field("code_pr") int code_pr, @Field("qte") int qte, @Field("code_bp") int code_bp);
+
+    @POST("deleteQteBonDeRetour.php")
+    @FormUrlEncoded
+    Call<ModelIsSuccess> deleteQteBonDeSortie(@Field("code_bp") int code_bp);
+
+    @POST("insertBonDeSortieHashmaped.php")
+    @FormUrlEncoded
+    Call<ModelIsSuccess> insertBonDeSortieHashmaped(@Field("code_bp") int code_bp, @Field("data") String data);
 
 }
 
