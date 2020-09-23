@@ -17,8 +17,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PointageRetourActivity" android:theme="@style/VenteActivityTheme"></activity>
-        <activity android:name=".PointageSortieActivity" android:theme="@style/VenteActivityTheme" />
+        <activity
+            android:name=".InfoActivity"
+            android:theme="@style/VenteActivityTheme" />
+        <activity
+            android:name=".ServerSettingsActivity"
+            android:theme="@style/VenteActivityTheme" />
+        <activity
+            android:name=".ProfileActivity"
+            android:theme="@style/VenteActivityTheme" />
+        <activity
+            android:name=".HistoryActivity"
+            android:theme="@style/VenteActivityTheme" />
+        <activity
+            android:name=".PointageRetourActivity"
+            android:theme="@style/VenteActivityTheme" />
+        <activity
+            android:name=".PointageSortieActivity"
+            android:theme="@style/VenteActivityTheme" />
         <activity
             android:name=".SplachScreen"
             android:theme="@style/SplashScreen">

@@ -90,5 +90,9 @@ public interface Api {
     @FormUrlEncoded
     Call<ModelIsSuccess> insertBonDeSortieHashmaped(@Field("code_bp") int code_bp, @Field("data") String data);
 
+    @POST("getListBonsPointage.php")
+    @FormUrlEncoded
+    Call<ModelListBonsPointage> getListBonsPointage(@Field("username") String username);
+
 }
 

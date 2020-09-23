@@ -224,15 +224,16 @@ public class MainPointeurActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_history) {
+            startActivity(new Intent(this, HistoryActivity.class));
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_profile) {
 
-        } else if (id == R.id.nav_tools) {
+        } else if (id == R.id.nav_server_settings) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_info) {
+
+        } else if (id == R.id.nav_receive) {
 
         } else if (id == R.id.nav_send) {
 
@@ -241,12 +242,10 @@ public class MainPointeurActivity extends AppCompatActivity
             SharedPref.getInstance(getApplicationContext()).logout();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
-
-
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        //drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
