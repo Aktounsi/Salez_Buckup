@@ -16,12 +16,20 @@ public class BonPointageAdapter  extends RecyclerView.Adapter<RecyclerView.ViewH
         private ArrayList<ListObject> mBonPointageList;
 
     private com.prom.eazy.BonPointageAdapter.OnItemClickListener mListener;
-        public interface OnItemClickListener {
+    private com.prom.eazy.BonPointageAdapter.OnItemLongClickListener mLongListener;
+
+    public interface OnItemClickListener {
             void onItemClick(int position);
         }
+    public interface OnItemLongClickListener {
+        boolean onItemLongClick(int position);
+    }
         public void setOnItemClickListener(com.prom.eazy.BonPointageAdapter.OnItemClickListener listener) {
             mListener = listener;
         }
+    public void setOnItemLongClickListener(com.prom.eazy.BonPointageAdapter.OnItemLongClickListener longListener) {
+        mLongListener = longListener;
+    }
 ////////////////////////////////////////
         public static class DateViewHolder extends RecyclerView.ViewHolder {
             public TextView mTxtDate;
@@ -44,7 +52,8 @@ public class BonPointageAdapter  extends RecyclerView.Adapter<RecyclerView.ViewH
         public TextView mTxtSecteur;
         public TextView mTxtType;
 
-        public BonPointageRetourViewHolder(View itemView, final com.prom.eazy.BonPointageAdapter.OnItemClickListener listener) {
+        public BonPointageRetourViewHolder(View itemView, final com.prom.eazy.BonPointageAdapter.OnItemClickListener listener,
+                                                        final com.prom.eazy.BonPointageAdapter.OnItemLongClickListener longListener) {
             super(itemView);
             //TODO initialize your xml views
             mImageView = itemView.findViewById(R.id.imageView);
@@ -61,6 +70,20 @@ public class BonPointageAdapter  extends RecyclerView.Adapter<RecyclerView.ViewH
                             listener.onItemClick(position);
                         }
                     }
+                }
+            });
+
+            //here
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (longListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            longListener.onItemLongClick(position);
+                        }
+                    }
+                    return true;
                 }
             });
         }
@@ -83,7 +106,8 @@ public class BonPointageAdapter  extends RecyclerView.Adapter<RecyclerView.ViewH
         public TextView mTxtSecteur;
         public TextView mTxtType;
 
-        public BonPointageSortieViewHolder(View itemView, final com.prom.eazy.BonPointageAdapter.OnItemClickListener listener) {
+        public BonPointageSortieViewHolder(View itemView, final com.prom.eazy.BonPointageAdapter.OnItemClickListener listener,
+                                           final com.prom.eazy.BonPointageAdapter.OnItemLongClickListener longListener) {
             super(itemView);
             //TODO initialize your xml views
             mImageView = itemView.findViewById(R.id.imageView);
@@ -100,6 +124,19 @@ public class BonPointageAdapter  extends RecyclerView.Adapter<RecyclerView.ViewH
                             listener.onItemClick(position);
                         }
                     }
+                }
+            });
+//here
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (longListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            longListener.onItemLongClick(position);
+                        }
+                    }
+                    return true;
                 }
             });
         }
@@ -129,12 +166,12 @@ public class BonPointageAdapter  extends RecyclerView.Adapter<RecyclerView.ViewH
             case ListObject.TYPE_GENERAL_SORTIE:
                 Log.d("exxx","rani f adapter onCreateViewHolder sortie");
                 View v0 = LayoutInflater.from(parent.getContext()).inflate(R.layout.bon_pointage_item, parent, false);
-                viewHolder = new BonPointageSortieViewHolder(v0,mListener); // view holder for normal items
+                viewHolder = new BonPointageSortieViewHolder(v0,mListener,mLongListener); // view holder for normal items
                 break;
             case ListObject.TYPE_GENERAL_RETOUR:
                 Log.d("exxx","rani f adapter onCreateViewHolder retour");
                 View v1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.bon_retour_item, parent, false);
-                viewHolder = new BonPointageRetourViewHolder(v1,mListener); // view holder for normal items
+                viewHolder = new BonPointageRetourViewHolder(v1,mListener,mLongListener); // view holder for normal items
                 break;
             case ListObject.TYPE_DATE:
                 Log.d("exxx","rani f adapter onCreateViewHolder date");

@@ -94,5 +94,9 @@ public interface Api {
     @FormUrlEncoded
     Call<ModelListBonsPointage> getListBonsPointage(@Field("username") String username);
 
+    @POST("deleteBon.php")
+    @FormUrlEncoded
+    Call<ModelIsSuccess> deleteBon(@Field("code_bp") int code_bp);
+
 }
 
