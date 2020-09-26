@@ -308,9 +308,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_profile) {
 
-        } else if (id == R.id.nav_server_settings) {
-
-        } else if (id == R.id.nav_info) {
+        }  else if (id == R.id.nav_info) {
 
         } else if (id == R.id.nav_receive) {
 

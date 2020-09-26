@@ -228,10 +228,10 @@ public class MainPointeurActivity extends AppCompatActivity
             startActivity(new Intent(this, HistoryActivity.class));
 
         } else if (id == R.id.nav_profile) {
+            startActivity(new Intent(this, SettingsActivity.class));
 
-        } else if (id == R.id.nav_server_settings) {
-
-        } else if (id == R.id.nav_info) {
+        }  else if (id == R.id.nav_info) {
+            startActivity(new Intent(this, ProfileActivity.class));
 
         } else if (id == R.id.nav_receive) {
 

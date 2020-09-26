@@ -81,4 +81,6 @@
     <string name="info">Info</string>
     <string name="send_data">Envoyer les données</string>
     <string name="receive_data">Recevoir les données</string>
+    <string name="informations">Informations Générales</string>
+    <string name="settings">Paramètres</string>
 </resources>

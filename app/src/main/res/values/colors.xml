@@ -31,6 +31,10 @@
 
     <color name="placeholder_bg_cl">#dddddd</color>
     <color name="placeholder_bg">#C9C9C9</color>
+    <color name="greyset">#D5DAE2</color>
+    <color name="tint_icon">#8995A2</color>
+    <color name="tint_icon_light">#BDD3E4</color>
+
 
 
 

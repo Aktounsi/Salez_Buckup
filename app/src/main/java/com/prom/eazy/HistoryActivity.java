@@ -272,29 +272,6 @@ public class HistoryActivity extends AppCompatActivity {
         });
     }
 
-
-
-    public void insertBonDeSortieHashmaped(int code_bp,String hashparam){
-        Api api = ApiAgent.getAgent().create(Api.class);
-        Call<ModelIsSuccess> insertBonDeSortieHashmaped = api.insertBonDeSortieHashmaped(code_bp,hashparam);
-        insertBonDeSortieHashmaped.enqueue(new Callback<ModelIsSuccess>() {
-            @Override
-            public void onResponse(Call<ModelIsSuccess> call, Response<ModelIsSuccess> response) {
-                Log.d("khraa",new Integer(response.body().getIsSuccess()).toString());
-                if (response.body().getIsSuccess() == 1) {
-
-                }else{
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ModelIsSuccess> call, Throwable t) {
-
-            }
-        });
-    }
-
     public void refreshConsolidatedList(){
         for (int i = 0; i < consolidatedList.size() ; i++) {
            try {
